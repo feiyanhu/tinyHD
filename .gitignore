@@ -1,0 +1,3 @@
+__pycache__
+*.pyc
+kinetics400_train.pkl

@@ -1,0 +1,1 @@
+from .parse_yaml import get_config

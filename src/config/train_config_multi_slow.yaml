@@ -1,0 +1,24 @@
+LEARNING_SETUP:
+  BATCH_SIZE: 2 #How many images to include in batch when running inference, adjust according to GPU memory
+  LR: 0.01
+  OUTPUT_PATH: '/home/feiyan/runs/'
+
+DATASET_SETUP:  
+  DHF1K_PATH: '/data/DHF1K/'
+  UCF_PATH: NULL
+  HOLLYWOOD_PATH: NULL
+  KINETIC400_PATH: '/data/kinetics400/kinetics400/'
+  AUX_ONLY: False
+  
+MODEL_SETUP:
+  DECODER : ['d1', 'd2', 'd3']
+  CHANNEL_REDUCTION: 4
+  INPUT_SIZE: 16
+  OUTPUT_SIZE: 16
+  SINGLE: [False, False, False]
+  FORCE_MULTI: False
+  ITERMEDIATE_TARGET: ['I', None, None]
+
+TEACHER_SETUP:
+  TYPE: 'HD2S'
+  PATH: '../../SalGradNet_distillation/pretrained/weight_MinLoss_new.pt'
