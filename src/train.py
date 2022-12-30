@@ -220,7 +220,7 @@ def config_dataset(data_dir, aux_only, aux_data, model_input_size, model_output_
             frame_num, sal_indx = 32, list(range(16, 32))
             x_indx, teacher_indx = range(16, 32), [range(i, i+16) for i in range(16)]
         elif model_output_size == 8:
-            print('8 output')
+            print('8 output not yet implemented'); exit()
             frame_num, sal_indx = 24, list(range(16, 24))
             x_indx, teacher_indx = range(8, 24), [range(i, i+16) for i in range(8)]
         else:

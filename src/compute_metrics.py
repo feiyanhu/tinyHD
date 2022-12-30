@@ -9,12 +9,12 @@ vid_dict = shuffleMaps.get_vid_list('/data/DHF1K/annotation')
 
 def calc_metric(paths):
     #weights = [0.3, 0.4, 0.3]
-    weights = [0.5, 0.5]
-    pred_sal_list = paths[0]
+    #weights = [0.5, 0.5]
+    pred_sal = paths[0]
     gt_sal = paths[1]
     fixation = plt.imread(gt_sal.replace('maps', 'fixation'))
     gt_sal = plt.imread(gt_sal)
-    pred_list = [plt.imread(pred_sal) for pred_sal in pred_sal_list]
+    pred_list = [plt.imread(pred_sal)]
     if len(pred_list) == 1: pred_sal = pred_list[0]
     else:
         pred_sal = 0
@@ -35,33 +35,16 @@ def calc_metric(paths):
     return auc_judd_score, auc_borji, cc, nss, sim
     #return auc_judd_score, auc_borji, sauc, cc, nss, sim
 
-def main():
+def main(data_dir, vid_list, pred_path, data_type):
     pool = Pool(6)
-    val_vid_list = range(600, 700)
-    gt_path = '/data/DHF1K/annotation/'
-
-    sub_dir = '/home/feiyan/'
-    #sub_path = [sub_dir+'test_generate']
-    #sub_path = [sub_dir+'test_generate_rc4']
-    sub_path = [sub_dir+'test_generate_rc2']
-    #sub_path = [sub_dir+'test_generate_samepad']
-    #sub_path = [sub_dir+'test_generate_d123m']
-    #sub_path = [sub_dir+'test_generate_d123m_rc2_ta']
-
-    #sub_dir = '/home/'
-    #sub_path = [sub_dir+'test_generate_tmp']
+    gt_path = '{}annotation'.format(data_dir)
 
     #sub_dir = '/home/feiyan/'
     #sub_path = [sub_dir+'test_generate']
 
-    #sub_path = [sub_dir+'test_generate_d123m']
-    #sub_path = [sub_dir+'test_generate_vinet']
-    #sub_path = [sub_dir+'test_generate_tased']
-    #sub_path = [sub_dir+'test_generate_s3ddla']
-    #sub_path = [sub_dir+'test_generate_tmp', sub_dir+'test_generate_d1d2d3s']
     all_metrics = []
-    for vid in val_vid_list:
-        vid = vid + 1
+    for vid in vid_list:
+        #vid = vid + 1
         vid_path = '{}/{:04d}/maps/'.format(gt_path, vid)
         frame_list = [n.split('.')[0] for n in os.listdir(vid_path) if '.png' in n]
         frame_list.sort()
@@ -69,8 +52,9 @@ def main():
         #frame_list = frame_list[:int(int(len(frame_list)/16)*16)]
         #gt_list = [os.path.join(vid_path, frame_id) for frame_id in frame_list]
         
-        frame_list = [([os.path.join(sub_pred_dir, '{:04d}'.format(vid), frame_id+'.png') for sub_pred_dir in sub_path], os.path.join(vid_path, frame_id+'.png')) \
-                   for frame_id in frame_list]
+        frame_list = [(os.path.join(pred_path, '{:04d}'.format(vid), frame_id+'.png'), os.path.join(vid_path, frame_id+'.png')) for frame_id in frame_list]
+        #print(frame_list)
+        #exit()
         result_matrix = pool.map(calc_metric, frame_list)
         result_matrix = np.asarray(result_matrix)
         #np.save('../eval_results/d123s_lonly/{}.npy'.format(vid), result_matrix)
@@ -84,13 +68,19 @@ def main():
     pool.join()
 
 if __name__ == '__main__':
-    #dhf1k_path = '/data/DHF1K/'
-
-    #save_path = 'generated/'
-    #save_path = '/home/feiyan/data/generated_dhf1k_model10_last3/'
     #shuffleMaps.sample_DHF1K('/home/feiyan/data/DHF1K/annotation')
     #shuffleMaps.sample_UCF('/home/feiyan/data/ucf_sport/training/')
-    main()
+    data_path = '/data/DHF1K/'
+    vid_list = range(601, 701)
+    pred_path = '/home/feiyan/test_generate_d123m'
+    data_type = 'dhf1k'
+    #pred_path = '/home/feiyan/test_generate'
+    #sub_path = [sub_dir+'test_generate_rc4']
+    #sub_path = [sub_dir+'test_generate_rc2']
+    #sub_path = [sub_dir+'test_generate_samepad']
+    #sub_path = [sub_dir+'test_generate_d123m']
+    #sub_path = [sub_dir+'test_generate_d123m_rc2_ta']
+    main(data_path, vid_list, pred_path, data_type)
 
     #0601 [0.94260393 0.90405098 0.52923381 3.62900686] mean so far [0.94260393 0.90405098 0.52923381 3.62900686]
     #0602 [0.91216144 0.87534007 0.50829668 2.66743018] mean so far [0.92738268 0.88969553 0.51876525 3.14821852]

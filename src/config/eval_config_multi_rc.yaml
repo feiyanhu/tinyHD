@@ -1,0 +1,23 @@
+LEARNING_SETUP:
+  BATCH_SIZE: 20 #How many images to include in batch when running inference, adjust according to GPU memory
+  OUTPUT_PATH: '/home/feiyan/test_generate_d123m/'
+  #save_path = '/home/feiyan/test_generate_d123m/'
+  #save_path = '/home/feiyan/test_generate_d123m_rc4_ta/'
+  #save_path = '/home/feiyan/test_generate_d123m_rc2_ta/'
+
+DATASET_SETUP:  
+  DHF1K_PATH: '/data/DHF1K/'
+  UCF_PATH: NULL
+  HOLLYWOOD_PATH: NULL
+  
+MODEL_SETUP:
+  DECODER : ['d1', 'd2', 'd3']
+  CHANNEL_REDUCTION: 1
+  INPUT_SIZE: 16
+  OUTPUT_SIZE: 16
+  SINGLE: [True, False, False]
+  FORCE_MULTI: False
+  D1_LAST: False
+  MODEL_WEIGHTS: '../weights/d123m_rc2_rc1T.pth'
+  #model_path = '../weights/d123m_rc2_rc1T.pth'
+  #model_path = '../weights/d123m_rc4_rc1T.pth'

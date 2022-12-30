@@ -32,7 +32,7 @@ def calc_metric(paths):
 def main():
     pool = Pool(6)
     gt_path = '/home/feiyan/data/ucf_sport/testing/'
-    val_vid_list = video_list = os.listdir(gt_path)
+    val_vid_list = os.listdir(gt_path)
     sub_dir = '/home/'
     #sub_path = [sub_dir+'generated_dhf1k_model10_last1', sub_dir+'generated_dhf1k_model10_last3']
     #sub_path = [sub_dir+'generated_dhf1k_model10_last3', sub_dir+'generated_dhf1k_model10_last4']
