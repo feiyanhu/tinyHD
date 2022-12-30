@@ -4,11 +4,11 @@ LEARNING_SETUP:
   OUTPUT_PATH: '/home/feiyan/runs/'
 
 DATASET_SETUP:  
-  DHF1K_PATH: '/data/DHF1K/'
-  UCF_PATH: NULL
+  DHF1K_PATH: NULL # NULL or '/home/feiyan/data/DHF1K/'
+  UCF_PATH: '/home/feiyan/data/ucf_sport/' #NULL or '/home/feiyan/data/ucf_sport/'
   HOLLYWOOD_PATH: NULL
-  KINETIC400_PATH: '/data/kinetics400/kinetics400/'
-  AUX_ONLY: False
+  KINETIC400_PATH: '/data/kinetics400/kinetics400/' #NULL or '/data/kinetics400/kinetics400/'
+  AUX_ONLY: False #True #False
   
 MODEL_SETUP:
   DECODER : ['d1', 'd2', 'd3']

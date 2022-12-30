@@ -1,6 +1,6 @@
 LEARNING_SETUP:
   BATCH_SIZE: 20 #How many images to include in batch when running inference, adjust according to GPU memory
-  OUTPUT_PATH: '/home/feiyan/test_generate_d123m/'
+  OUTPUT_PATH: '/home/feiyan/runs/test_generate_d123m/'
   #save_path = '/home/feiyan/test_generate_d123m/'
   #save_path = '/home/feiyan/test_generate_d123m_rc4_ta/'
   #save_path = '/home/feiyan/test_generate_d123m_rc2_ta/'

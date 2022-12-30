@@ -193,12 +193,13 @@ def main(model, single_mode, batch_size, frame_num, sal_indx, pretrain_path, sav
 
 
 if __name__ == '__main__':
-    #model_path = '/home/runs/ucf_kinetic_lt_myschedule_e1_d1s_d2s_d3s/ft_197_0.40632_1.03739.pth'
+    model_path = '/home/feiyan/runs/ucf_kinetic_lt_myschedule_e1_d1s_d2s_d3s/ft_197_0.40632_1.03739.pth'
     #model_path = '/home/runs/ucf_kinetic_lt_myschedule_e1_d1s_d2m_d3m/ft_193_0.43095_1.14993.pth'
 
-    model_path = '/home/feiyan/runs/ucf_kinetic_lt_myschedule_e1_d1s_d2s_d3_update/ft_163_0.45265_0.74858.pth'
+    #model_path = '/home/feiyan/runs/ucf_kinetic_lt_myschedule_e1_d1s_d2s_d3_update/ft_163_0.45265_0.74858.pth'
 
-    save_path = '/home/test_generate_ucf/'
+    #save_path = '/home/test_generate_ucf/'
+    save_path = '/home/feiyan/runs/test_generate_ucf_tmp/'
     data_dir='/home/feiyan/data/ucf_sport/'
     batch_size = 20
     reduced_channel = 1 #can only be 1, 2, 4

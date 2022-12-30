@@ -42,7 +42,7 @@ def padd_same(window, cid, vid_dir, img):
             #print(file_name)
             cv2.imwrite(file_name, img)
 
-def padd_append(window_size, cid, start_idx, newsize, vid_dir, model, vgg_in, sal_indx):
+def padd_append(window_size, cid, start_idx, newsize, vid_dir, model, vgg_in, sal_indx, data_type, tmp_name):
     if cid <= window_size:
         for i in range(1, cid, sal_indx[-1] - sal_indx[0]+1):
             tmp = window_size - i
@@ -52,7 +52,11 @@ def padd_append(window_size, cid, start_idx, newsize, vid_dir, model, vgg_in, sa
             img = y.detach().cpu().numpy()[0][0]
             img = post_process_png(img, newsize[[1, 0]])
             #for i in range(len_dict[int(vid)] - 14, len_dict[int(vid)]+1):
-            file_name = '{}/{:04d}.png'.format(vid_dir, i)
+            #file_name = '{}/{:04d}.png'.format(vid_dir, i)
+            if data_type == 'dhf1k':
+                file_name = '{}/{:04d}.png'.format(vid_dir, i)
+            elif data_type == 'ucf':
+                file_name = '{}/{}_{:03d}.png'.format(vid_dir, tmp_name, i)
             print(file_name)
             cv2.imwrite(file_name, img)
 
@@ -86,6 +90,7 @@ def padd_same_end(window, cid, vid_dir, img, sal_indx):
 
 
 def test_one_single(model, dataloader, save_path, sal_indx):
+    data_type = 'dhf1k' #'ucf' #'dhf1k'
     #len_dict = vid_length()
     for i, (X, original_size, video_ids, clip_ids, has_label, rand_sig) in enumerate(dataloader):
         vgg_in = X[0].float().cuda(0)
@@ -97,7 +102,12 @@ def test_one_single(model, dataloader, save_path, sal_indx):
         #exit()
         for imgs, vid, cids, newsize, start_idx in zip(y, video_ids, clip_ids, original_size, range(len(y))):
             newsize, cids = newsize.numpy(), cids.numpy()
-            vid_dir = '{}{:04d}'.format(save_path, int(vid))
+            if data_type == 'dhf1k':
+                vid_dir = '{}{:04d}'.format(save_path, int(vid))
+            elif data_type == 'ucf':
+                vid_dir = '{}{}'.format(save_path, vid)
+                tmp_name = vid.split('/')[-1]
+                tmp_name = tmp_name[:-4] + '_' + tmp_name[-3:]
             if not exists(vid_dir):
                 mkdir(vid_dir)
                 print(vid_dir)
@@ -105,17 +115,24 @@ def test_one_single(model, dataloader, save_path, sal_indx):
             for img, cid in zip(imgs, cids):
                 #print(img.shape, cid)
                 img = post_process_png(img, newsize[[1, 0]])
-                file_name = '{}/{:04d}.png'.format(vid_dir, cid)
+                if data_type == 'dhf1k':
+                    file_name = '{}/{:04d}.png'.format(vid_dir, cid)
+                    tmp_name = None
+                elif data_type == 'ucf':
+                    file_name = '{}/{}_{:03d}.png'.format(vid_dir, tmp_name, cid)
+                #print(file_name)
+                #exit()
                 #print(img.shape)
                 #exit()
                 cv2.imwrite(file_name, img)
                 #print(cid, file_name, img.shape)
                 #exit()
                 #padd_same(16, cid, vid_dir, img) #paper number?? need to check
-                padd_append(16, cid, start_idx, newsize, vid_dir, model, vgg_in, sal_indx)
+                padd_append(16, cid, start_idx, newsize, vid_dir, model, vgg_in, sal_indx, data_type, tmp_name)
 
 def test_one_multi(model, dataloader, save_path, sal_indx):
-    len_dict = vid_length(sal_indx)
+    #len_dict = vid_length(sal_indx)
+    data_type = 'ucf'
     #print(len_dict)
     #exit()
     for i, (X, original_size, video_ids, clip_ids, has_label, rand_sig) in enumerate(dataloader):
@@ -130,7 +147,13 @@ def test_one_multi(model, dataloader, save_path, sal_indx):
         #exit()
         for imgs, vid, cids, newsize, start_idx in zip(y, video_ids, clip_ids, original_size, range(len(y))):
             newsize, cids = newsize.numpy(), cids.numpy()
-            vid_dir = '{}{:04d}'.format(save_path, int(vid))
+            #vid_dir = '{}{:04d}'.format(save_path, int(vid))
+            if data_type == 'dhf1k':
+                vid_dir = '{}{:04d}'.format(save_path, int(vid))
+            elif data_type == 'ucf':
+                vid_dir = '{}{}'.format(save_path, vid)
+                tmp_name = vid.split('/')[-1]
+                tmp_name = tmp_name[:-4] + '_' + tmp_name[-3:]
             if not exists(vid_dir):
                 mkdir(vid_dir)
                 print(vid_dir)
@@ -138,9 +161,14 @@ def test_one_multi(model, dataloader, save_path, sal_indx):
             for img, cid in zip(imgs, cids):
                 #print(img.shape, cid)
                 img = post_process_png(img, newsize[[1, 0]])
-                file_name = '{}/{:04d}.png'.format(vid_dir, cid)
+                #file_name = '{}/{:04d}.png'.format(vid_dir, cid)
                 #print(img.shape)
                 #exit()
+                if data_type == 'dhf1k':
+                    file_name = '{}/{:04d}.png'.format(vid_dir, cid)
+                    tmp_name = None
+                elif data_type == 'ucf':
+                    file_name = '{}/{}_{:03d}.png'.format(vid_dir, tmp_name, cid)
                 cv2.imwrite(file_name, img)
                 
                 #padd_append_multi(16, cid, start_idx, newsize, vid_dir, model, vgg_in, sal_indx)
@@ -200,7 +228,7 @@ def config_dataset(data_dir, model_input_size, model_output_size):
         print('generating UCF validation set saliency maps!')
         val_snpit = ucf.UCF('test', frame_num, 1, out_type=['vgg_in'], size=[(192, 256), (192, 256)],
                             sal_indx=sal_indx, inference_mode=True, frame_rate=None,
-                            data_dir=data_dir)
+                            data_dir=data_dir[1])
     elif data_select_idx.index(True) == 2:
         print('Hollywood selected! Aux data selected! Kinetic400 is used! Create dataset now')
     
@@ -216,8 +244,9 @@ def config_dataset(data_dir, model_input_size, model_output_size):
 if __name__ == '__main__':
     import config as cfg
     #config = cfg.get_config('config/eval_config_single.yaml')
-    #config = cfg.get_config('config/eval_config_multi.yaml')
-    config = cfg.get_config('config/eval_config_multi_rc.yaml')
+    config = cfg.get_config('config/eval_config_multi.yaml')
+    #config = cfg.get_config('config/eval_config_multi_ucf.yaml')
+    #config = cfg.get_config('config/eval_config_multi_rc.yaml')
 
     batch_size = config.LEARNING_SETUP.BATCH_SIZE#15#9#15#18 #11
     save_path = config.LEARNING_SETUP.OUTPUT_PATH

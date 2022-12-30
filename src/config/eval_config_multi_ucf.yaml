@@ -1,0 +1,18 @@
+LEARNING_SETUP:
+  BATCH_SIZE: 20 #How many images to include in batch when running inference, adjust according to GPU memory
+  OUTPUT_PATH: '/home/feiyan/runs/test_generate_ucf_multi/'
+
+DATASET_SETUP:  
+  DHF1K_PATH: NULL
+  UCF_PATH: '/home/feiyan/data/ucf_sport/'
+  HOLLYWOOD_PATH: NULL
+  
+MODEL_SETUP:
+  DECODER : ['d1', 'd2', 'd3']
+  CHANNEL_REDUCTION: 1
+  INPUT_SIZE: 16
+  OUTPUT_SIZE: 16
+  SINGLE: [True, False, False]
+  FORCE_MULTI: False
+  D1_LAST: False
+  MODEL_WEIGHTS: '/home/feiyan/runs/ucf_kinetic_lt_myschedule_e1_d1s_d2m_d3m/ft_193_0.43095_1.14993.pth'

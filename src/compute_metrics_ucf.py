@@ -33,10 +33,11 @@ def main():
     pool = Pool(6)
     gt_path = '/home/feiyan/data/ucf_sport/testing/'
     val_vid_list = os.listdir(gt_path)
-    sub_dir = '/home/'
+    sub_dir = '/home/feiyan/runs/'
     #sub_path = [sub_dir+'generated_dhf1k_model10_last1', sub_dir+'generated_dhf1k_model10_last3']
     #sub_path = [sub_dir+'generated_dhf1k_model10_last3', sub_dir+'generated_dhf1k_model10_last4']
-    sub_path = [sub_dir+'test_generate_ucf']
+    #sub_path = [sub_dir+'test_generate_ucf']
+    sub_path = [sub_dir+'test_generate_ucf_tmp']
     all_metrics = []
     for vid in val_vid_list:
         vid_path = '{}/{}/maps/'.format(gt_path, vid)

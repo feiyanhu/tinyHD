@@ -307,25 +307,3 @@ if __name__ == '__main__':
     teacher_model = S3D_wrapper(teacher_path)
     optimizer = model.get_optimizer(lr)
     main(model, teacher_model, optimizer, data_loader, inter_config, train_config, save_path)
-    exit()
-
-    #frame_num, sal_indx = 16, list(range(15, 16))
-    #x_indx, teacher_indx = range(0, 16), [range(0, 16)]
-    frame_num, sal_indx = 32, list(range(16, 32))
-    x_indx, teacher_indx = range(16, 32), [range(i, i+16) for i in range(16)]
-    #8 outputs
-    #frame_num, sal_indx = 24, list(range(16, 24))
-    #x_indx, teacher_indx = range(8, 24), [range(i, i+16) for i in range(8)]
-
-    reduced_channel = 1
-    decoder_config = ['d1', 'd2', 'd3']
-    single_mode = [False, False, False]
-    force_multi = False
-    n_output = 16 #16 or 8
-
-    inter_config = ['I', None, None]
-    model_name = 'dhf1k_kinetic_lt_myschedule_e1_d1md2md3m_3'
-    main(model_name, reduced_channel, decoder_config, single_mode, inter_config,
-         frame_num, sal_indx, x_indx, teacher_indx,
-         lr, batch_size, save_path, data_dir, teacher_path, force_multi=force_multi, n_output=n_output)
-    

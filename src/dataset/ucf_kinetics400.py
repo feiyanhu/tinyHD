@@ -45,12 +45,14 @@ class ucf_kinetics400(Dataset):
 	
 	def __getitem__(self, item):		
 		if item < len(self.ucf_dataset):
-			data_list, o_size, video_id, sal_clip_ids, has_sal, _ = self.ucf_dataset[item]
+			#data_list, o_size, video_id, sal_clip_ids, has_sal, _ = self.ucf_dataset[item]
+			data_list, _, has_sal, _ = self.ucf_dataset[item]
 			video_class = -1
 			has_cls = False
 		elif item >= len(self.ucf_dataset):
 			item_k = item - len(self.ucf_dataset)
-			data_list, video_id, clip_ids, video_class, has_sal = self.kinetics400_dataset[item_k]
+			#data_list, video_id, clip_ids, video_class, has_sal = self.kinetics400_dataset[item_k]
+			data_list, video_class, has_sal, _ = self.kinetics400_dataset[item_k]
 			has_cls = True
 			data_list.append(torch.zeros(1 , len(self.sal_indx), data_list[0].shape[1], data_list[0].shape[2]))
 		
