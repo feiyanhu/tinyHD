@@ -71,7 +71,7 @@ def main(data_dir, vid_list, pred_path, data_type):
         #np.save('../eval_results/d123s_tasedteacher/{}.npy'.format(vid), result_matrix)
         all_metrics.append(np.mean(result_matrix, axis=0))
         print(vid, np.mean(result_matrix, axis=0), 'accumulated mean so far', np.mean(all_metrics, axis=0))
-    print('----------------------------------->')
+    print('----------------------------------->123s 16 frame*')
     print(np.mean(all_metrics, axis=0))
     pool.close()
     pool.join()
@@ -81,13 +81,14 @@ if __name__ == '__main__':
     #shuffleMaps.sample_UCF('/home/feiyan/data/ucf_sport/training/')
     data_type = 'dhf1k' #dhf1k or ucf
     if data_type == 'dhf1k':
-        data_path = '/home/feiyan/data/DHF1K/' #'/data/DHF1K/' or '/home/feiyan/data/ucf_sport/testing/'
+        data_path = '/data/DHF1K/' #'/data/DHF1K/' or '/home/feiyan/data/ucf_sport/testing/'
         vid_list = range(601, 701)
     elif data_type == 'ucf':
         data_path = '/home/feiyan/data/ucf_sport/testing/' #'/data/DHF1K/' or '/home/feiyan/data/ucf_sport/testing/'
         vid_list = os.listdir(data_path)
 
-    pred_path = '/home/feiyan/runs/test_generate_d123m'
+    #pred_path = '/home/feiyan/test_generate_d123m'
+    pred_path = '/home/feiyan/test_generate'
     #pred_path = '/home/feiyan/runs/test_generate_ucf_tmp'
     #pred_path = '/home/feiyan/runs/test_generate_ucf_multi'
     #pred_path = '/home/feiyan/runs/test_generate'
