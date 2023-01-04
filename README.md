@@ -25,3 +25,5 @@ pip install -r requirements.txt
 ## How to run the code
 #### Download pretrained teacher models (HD2S) weights 
 The HD2S teacher weights can be downloaded from [here](https://studentiunict-my.sharepoint.com/:u:/g/personal/uni307680_studium_unict_it/EVyDIERfwcdOnAF84v1b1VQBlDNxxhOdI-nAIafqwVV7Lg?download=1) or from [HD2S repository](https://github.com/perceivelab/hd2s)
+
+Kinetic 400 metadata can be downloaded from [This link](https://drive.google.com/file/d/17B0KnCumwsJzWh7GcSVCRe_J5kUYi9tH/view?usp=share_link). Please place the meta data file the directory "src/dataset/metadata/"
