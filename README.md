@@ -37,4 +37,34 @@ In order to train, evaluate, load model and generate saliency maps, configuratio
 + 'eval_config_multi_rc.yaml' is used to evaluate TinyHD-M (16 outputs) with reduced channels (2, 4 times).
 + 'eval_config_single.yaml' is used to evaluate TinyHD-S (1 outputs).
 
+The following parameters in the config file can be changed.
+
+
 #### Training
+To start training:
+```bash
+python train.py train_config_multi.yaml
+```
+
+```bash
+python train.py train_single_multi.yaml
+```
+
+#### Generating saliency map
+In order to generate saliency maps:
+##### DFH1K
+```bash
+python generate.py eval_config_multi.yaml
+```
+
+```bash
+python train.py eval_config_single.yaml
+```
+##### UCF-sport
+```bash
+python generate.py eval_config_multi_ucf.yaml
+```
+
+```bash
+python train.py eval_config_single.yaml
+```
