@@ -30,11 +30,11 @@ Kinetic 400 metadata can be downloaded from [This link](https://drive.google.com
 
 #### Configuration file
 In order to train, evaluate, load model and generate saliency maps, configuration files are needed. Default configurations files are placed in "src/config/"
-+'train_config_multi.yaml' is used to train TinyHD-M (16 outputs).
-+'train_config_single.yaml' is used to train TinyHD-S (1 output).
++ 'train_config_multi.yaml' is used to train TinyHD-M (16 outputs).
++ 'train_config_single.yaml' is used to train TinyHD-S (1 output).
 
-+'eval_config_multi.yaml' is used to evaluate TinyHD-M (16 outputs).
-+'eval_config_multi_rc.yaml' is used to evaluate TinyHD-M (16 outputs) with reduced channels (2, 4 times).
-+'eval_config_single.yaml' is used to evaluate TinyHD-S (1 outputs).
++ 'eval_config_multi.yaml' is used to evaluate TinyHD-M (16 outputs).
++ 'eval_config_multi_rc.yaml' is used to evaluate TinyHD-M (16 outputs) with reduced channels (2, 4 times).
++ 'eval_config_single.yaml' is used to evaluate TinyHD-S (1 outputs).
 
 #### Training
