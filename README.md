@@ -68,3 +68,16 @@ python generate.py eval_config_multi_ucf.yaml
 ```bash
 python train.py eval_config_single.yaml
 ```
+
+#### Evaluation
+To evaluate the performance, saliency maps has to be generated in the previous step.
+```bash
+python compute_metrics.py -saliency_maps_path -dataset_name
+```
+
+## Acknowledgement
+This publication has been financially supported by:
++ Science Foundation Ireland (SFI) under grant number SFI/12/RC/2289 P2
++ Regione Sicilia, Italy, RehaStart project (grant identifier: PO FESR 2014/2020, Azione 1.1.5, N. 08ME6201000222, CUP G79J18000610007)
++ University of Catania, Piano della Ricerca di Ateneo, 2020/2022,Linea2D
++ MIUR,Italy,Azione1.2“Mobilita` dei Ricercatori” (grant identifier: Asse I, PON R&I 2014- 2020, id. AIM 1889410, CUP: E64I18002520007).
