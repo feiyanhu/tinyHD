@@ -1,6 +1,6 @@
 # TinyHD: Efficient Video Saliency Prediction With Heterogeneous Decoders Using Hierarchical Maps Distillation
 Implementation of WACV 2023 paper "TinyHD: Efficient Video Saliency Prediction With Heterogeneous Decoders Using Hierarchical Maps Distillation".
-
+![](example1.gif)
 ## If you find the work useful please cite
 [Paper link](https://openaccess.thecvf.com/content/WACV2023/papers/Hu_TinyHD_Efficient_Video_Saliency_Prediction_With_Heterogeneous_Decoders_Using_Hierarchical_WACV_2023_paper.pdf)
 
@@ -14,8 +14,6 @@ Implementation of WACV 2023 paper "TinyHD: Efficient Video Saliency Prediction W
     pages     = {2051-2060}
 }
 ````
-
-![](example1.gif)
 
 ## Install Dependencies
 
