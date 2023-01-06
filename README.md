@@ -43,30 +43,30 @@ The following parameters in the config file can be changed.
 #### Training
 To start training:
 ```bash
-python train.py train_config_multi.yaml
+python train.py config/train_config_multi.yaml
 ```
 
 ```bash
-python train.py train_single_multi.yaml
+python train.py config/train_single_multi.yaml
 ```
 
 #### Generating saliency map
 In order to generate saliency maps:
 ##### DFH1K
 ```bash
-python generate.py eval_config_multi.yaml
+python generate.py config/eval_config_multi.yaml
 ```
 
 ```bash
-python train.py eval_config_single.yaml
+python generate.py config/eval_config_single.yaml
 ```
 ##### UCF-sport
 ```bash
-python generate.py eval_config_multi_ucf.yaml
+python generate.py config/eval_config_multi_ucf.yaml
 ```
 
 ```bash
-python train.py eval_config_single.yaml
+python generate.py config/eval_config_single.yaml
 ```
 
 #### Evaluation

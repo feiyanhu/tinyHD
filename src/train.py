@@ -247,17 +247,14 @@ def config_dataset(data_dir, aux_only, aux_data, model_input_size, model_output_
     return dataloader, [x_indx, teacher_indx]
 
 if __name__ == '__main__':
-    ###########################################################
-    #model_name = 'dhf1k_kinetic_v4_s3d_label_oldschedule_rc_e1d3_3dd_d2d3'
-    #reduced_channel = 1 #can only be 1, 2, 4
-    #decoder_config = ['d1', 'd1', 'd3']
-    #single_mode = [True, True, True]
-    #inter_config = ['I', None, None] #temporal Mean or Identical
-    #frame_num, sal_indx = 32, list(range(16, 32))
-    #x_indx, teacher_indx = range(16, 32), range(16)
-    ########################################################
+    import argparse
     import config as cfg
-    config = cfg.get_config('config/train_config_single.yaml')
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("config_path", help="path to config file")
+    args = parser.parse_args()
+    config = cfg.get_config(args.config_path)
+    #config = cfg.get_config('config/train_config_single.yaml')
     #config = cfg.get_config('config/train_config_multi.yaml')
     #config = cfg.get_config('config/train_config_multi_slow.yaml')
     #print(config)
