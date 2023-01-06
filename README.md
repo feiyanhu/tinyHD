@@ -85,6 +85,12 @@ To evaluate the performance, saliency maps has to be generated in the previous s
 python compute_metrics.py -saliency_maps_path -dataset_name
 ```
 
+#### Quick start (To be updated)
+To generate saliency maps of a video:
+```bash
+python quickstart.py -model_weights -video_path
+```
+
 ## Acknowledgement
 This publication has been financially supported by:
 + Science Foundation Ireland (SFI) under grant number SFI/12/RC/2289 P2
