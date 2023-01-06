@@ -50,6 +50,12 @@ The repo contains the following weight files:
 + 'weights/ucf_d123s.pth' : Single output w/o channel reduction (UCF-Sport)
 + 'weights/ucf_d123m.pth' : Multiple output w/o channel reduction (UCF-Sport)
 
+#### Quick start (To be updated)
+To generate saliency maps of a video:
+```bash
+python quickstart.py -model_weights -video_path
+```
+
 #### Training
 To start training:
 ```bash
@@ -83,12 +89,6 @@ python generate.py config/eval_config_single.yaml
 To evaluate the performance, saliency maps has to be generated in the previous step.
 ```bash
 python compute_metrics.py -saliency_maps_path -dataset_name
-```
-
-#### Quick start (To be updated)
-To generate saliency maps of a video:
-```bash
-python quickstart.py -model_weights -video_path
 ```
 
 ## Acknowledgement
