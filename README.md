@@ -39,6 +39,16 @@ In order to train, evaluate, load model and generate saliency maps, configuratio
 
 The following parameters in the config file can be changed.
 
+#### Model weights
+The repo contains the following weight files:
++ 'weights/d1d2d3_S_lt.pth' : Single output w/o channel reduction (DFH1K)
++ 'weights/d123s_rc2_rc1T.pth' : Single output with 2 times channel reduction (DFH1K) and teacher assistant
++ 'weights/d123s_rc4_rc1T.pth' : Single output with 4 times channel reduction (DFH1K) and teacher assistant
++ 'weights/d1d2d3_M_lt.pth' : Multiple output w/o channel reduction (DFH1K)
++ 'weights/d123m_rc2_rc1T.pth' : Multiple output with 2 times channel reduction (DFH1K) and teacher assistant
++ 'weights/d123m_rc4_rc1T.pth' : Multiple output with 4 times channel reduction (DFH1K) and teacher assistant
++ 'weights/ucf_d123s.pth' : Single output w/o channel reduction (UCF-Sport)
++ 'weights/ucf_d123m.pth' : Multiple output w/o channel reduction (UCF-Sport)
 
 #### Training
 To start training:
@@ -69,7 +79,7 @@ python generate.py config/eval_config_multi_ucf.yaml
 python generate.py config/eval_config_single.yaml
 ```
 
-#### Evaluation
+#### Evaluation (To be updated)
 To evaluate the performance, saliency maps has to be generated in the previous step.
 ```bash
 python compute_metrics.py -saliency_maps_path -dataset_name
