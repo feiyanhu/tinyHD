@@ -57,13 +57,13 @@ python quickstart.py -model_weights -video_path
 ```
 
 #### Training
-To start training:
+To start training for DHF1K dataset with auxillary dataset Kinetic400:
 ```bash
-python train.py config/train_config_multi.yaml
+python train.py config/train_config_multi.yaml -model_name
 ```
 
 ```bash
-python train.py config/train_single_multi.yaml
+python train.py config/train_single_single.yaml -model_name
 ```
 
 #### Generating saliency map

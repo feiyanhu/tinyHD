@@ -1,14 +1,11 @@
 LEARNING_SETUP:
   BATCH_SIZE: 20 #How many images to include in batch when running inference, adjust according to GPU memory
-  OUTPUT_PATH: '/home/feiyan/runs/test_generate/'
+  #OUTPUT_PATH: '/home/feiyan/runs/ucf_generate/'
+  OUTPUT_PATH: '/home/feiyan/dhf1k_generate/'
   #OUTPUT_PATH: '/home/feiyan/runs/test_generate_ucf_tmp/'
-  #save_path = '/home/feiyan/test_generate/'
-  #save_path = '/home/feiyan/test_generate_rc2/'
-  #save_path = '/home/feiyan/test_generate_rc4/'
-  #save_path = '/home/feiyan/test_generate_samepad/'
 
 DATASET_SETUP:  
-  DHF1K_PATH: '/home/feiyan/data/DHF1K/' #NULL '/data/DHF1K/'
+  DHF1K_PATH: '/data/DHF1K/' #'/home/feiyan/data/DHF1K/' #NULL '/data/DHF1K/'
   UCF_PATH: NULL #'/home/feiyan/data/ucf_sport/' NULL
   HOLLYWOOD_PATH: NULL
   
@@ -20,7 +17,7 @@ MODEL_SETUP:
   SINGLE: [True, True, True]
   FORCE_MULTI: False
   D1_LAST: False
-  MODEL_WEIGHTS: '../../Sal_dist/pretrained/d1d2d3_S_lt.pth'
-  #MODEL_WEIGHTS: '/home/feiyan/runs/ucf_kinetic_lt_myschedule_e1_d1s_d2s_d3s/ft_197_0.40632_1.03739.pth'
+  MODEL_WEIGHTS: '../weights/d1d2d3_S_lt.pth'
+  #MODEL_WEIGHTS: '../weights/ucf_d123s.pth'
   #model_path = '../weights/d123s_rc2_rc1T.pth'
   #model_path = '../weights/d123s_rc4_rc1T.pth'

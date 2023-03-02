@@ -17,6 +17,7 @@ MODEL_SETUP:
   OUTPUT_SIZE: 1
   SINGLE: [True, True, True]
   FORCE_MULTI: False
+  D1_LAST: False
   ITERMEDIATE_TARGET: ['I', None, None]
 
 TEACHER_SETUP:

@@ -89,7 +89,7 @@ def test_one(model, dataloader, decoder_config, inter_config, x_indx, teacher_in
     [model, s3d_model] = model
     all_loss_gt, all_loss_s3d, all_loss_inter = AverageMeter(), AverageMeter(), AverageMeter()
     
-    for i, (X, _, video_idx, _, has_sal, rand_sig) in enumerate(dataloader):
+    for i, (X, _,  has_sal, has_cls) in enumerate(dataloader):
         vgg_in = X[0][:,:,x_indx,:,:].float().cuda(0)
         s3d_in = X[1].float().cuda(0)
         label = X[2][has_sal].float().cuda(0)
@@ -169,7 +169,9 @@ def kinetic_data(batch_size, frame_num, sal_indx, data_dir):
     }
     return dataloader, train_snpit
 
-def main(model, teacher_model, optimizer, dataloader, inter_config, train_config, save_path):
+def main(model_name, model, teacher_model, optimizer, dataloader, inter_config, train_config, save_path):
+    import os
+    if not os.path.exists('{}/{}'.format(save_path, model_name)): os.mkdir('{}/{}'.format(save_path, model_name))
     [x_indx, teacher_indx] = train_config
     model.cuda(0)
     teacher_model.model.cuda(0)
@@ -252,14 +254,14 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("config_path", help="path to config file")
+    parser.add_argument("model_name", help="name for folders to save checkpoints")
     args = parser.parse_args()
     config = cfg.get_config(args.config_path)
     #config = cfg.get_config('config/train_config_single.yaml')
     #config = cfg.get_config('config/train_config_multi.yaml')
     #config = cfg.get_config('config/train_config_multi_slow.yaml')
-    #print(config)
-    #print(, config.MODEL_SETUP.DECODER)
-    #exit()
+
+    model_name = args.model_name
     lr = config.LEARNING_SETUP.LR
     batch_size = config.LEARNING_SETUP.BATCH_SIZE#15#9#15#18 #11
     save_path = config.LEARNING_SETUP.OUTPUT_PATH
@@ -277,30 +279,11 @@ if __name__ == '__main__':
     single_mode = config.MODEL_SETUP.SINGLE
     force_multi = config.MODEL_SETUP.FORCE_MULTI
     inter_config = config.MODEL_SETUP.ITERMEDIATE_TARGET
-    #Single
-    #single_mode = [True, True, True]
-    #force_multi = False
-    #inter_config = ['I', None, None]
-    #multi16
-    #single_mode = [True, False, False]
-    #force_multi = False
-    #inter_config = ['M', None, None]
-    #multi16
-    #single_mode = [False, False, False]
-    #force_multi = False
-    #inter_config = ['I', None, None]
-    #multi16
-    #single_mode = [True, True, True]
-    #force_multi = True
-    #inter_config = ['M', None, None]
-    #d1 d2
-    #single_mode = [True, True]
-    #force_multi = False
-    #inter_config = ['I', None]
+    d1_last = config.MODEL_SETUP.D1_LAST
 
     
     data_loader, train_config = config_dataset(data_dir, aux_only, aux_data, model_input_size, model_output_size, teacher_type)
-    model = FastSalA(reduced_channel, decoder_config, single_mode, force_multi=force_multi, n_output=model_output_size)
+    model = FastSalA(reduced_channel, decoder_config, single_mode, force_multi=force_multi, n_output=model_output_size, d1_last=d1_last)
     teacher_model = S3D_wrapper(teacher_path)
     optimizer = model.get_optimizer(lr)
-    main(model, teacher_model, optimizer, data_loader, inter_config, train_config, save_path)
+    main(model_name, model, teacher_model, optimizer, data_loader, inter_config, train_config, save_path)
