@@ -85,7 +85,7 @@ python generate.py config/eval_config_multi_ucf.yaml
 python generate.py config/eval_config_single.yaml
 ```
 
-#### Evaluation (To be updated)
+#### Evaluation
 To evaluate the performance, saliency maps has to be generated in the previous step.
 ```bash
 python compute_metrics.py -saliency_maps_path -dataset_path -data_type

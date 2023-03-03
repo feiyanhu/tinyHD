@@ -16,10 +16,7 @@ def calc_metric(paths):
     gt_sal = plt.imread(gt_sal)
     pred_list = [plt.imread(pred_sal)]
     if len(pred_list) == 1: pred_sal = pred_list[0]
-    else:
-        pred_sal = 0
-        for x, w in zip(pred_list, weights):
-            pred_sal = pred_sal + w * x
+    else:exit('length of prediction list can only be 1')
     
     #print(fixation.shape, pred_sal.shape)
     #exit()
@@ -62,7 +59,7 @@ def main(data_dir, vid_list, pred_path, data_type):
             frame_list = [(os.path.join(pred_path, '{:04d}'.format(vid), frame_id+'.png'), os.path.join(vid_path, frame_id+'.png')) for frame_id in frame_list]
         elif data_type == 'ucf':
             frame_list = [(os.path.join(pred_path, vid, frame_id+'.png'), os.path.join(vid_path, frame_id+'.png')) for frame_id in frame_list]
-            
+
         result_matrix = pool.map(calc_metric, frame_list)
         result_matrix = np.asarray(result_matrix)
         #np.save('../eval_results/d123s_lonly/{}.npy'.format(vid), result_matrix)
