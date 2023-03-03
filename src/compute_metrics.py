@@ -56,19 +56,16 @@ def main(data_dir, vid_list, pred_path, data_type):
         frame_list = [n.split('.')[0] for n in os.listdir(vid_path) if '.png' in n]
         frame_list.sort()
         
-        frame_list = frame_list[:int(int(len(frame_list)/16)*16)]
+        #frame_list = frame_list[:int(int(len(frame_list)/16)*16)]
         #gt_list = [os.path.join(vid_path, frame_id) for frame_id in frame_list]
         if data_type == 'dhf1k':
             frame_list = [(os.path.join(pred_path, '{:04d}'.format(vid), frame_id+'.png'), os.path.join(vid_path, frame_id+'.png')) for frame_id in frame_list]
         elif data_type == 'ucf':
             frame_list = [(os.path.join(pred_path, vid, frame_id+'.png'), os.path.join(vid_path, frame_id+'.png')) for frame_id in frame_list]
-        #print(frame_list)
-        #exit()
+            
         result_matrix = pool.map(calc_metric, frame_list)
         result_matrix = np.asarray(result_matrix)
         #np.save('../eval_results/d123s_lonly/{}.npy'.format(vid), result_matrix)
-        #np.save('../eval_results/d1s/{}.npy'.format(vid), result_matrix)
-        #np.save('../eval_results/d123s_tasedteacher/{}.npy'.format(vid), result_matrix)
         all_metrics.append(np.mean(result_matrix, axis=0))
         print(vid, np.mean(result_matrix, axis=0), 'accumulated mean so far', np.mean(all_metrics, axis=0))
     print('----------------------------------->123s 16 frame*')
@@ -77,8 +74,18 @@ def main(data_dir, vid_list, pred_path, data_type):
     pool.join()
 
 if __name__ == '__main__':
-    #shuffleMaps.sample_DHF1K('/home/feiyan/data/DHF1K/annotation')
-    #shuffleMaps.sample_UCF('/home/feiyan/data/ucf_sport/training/')
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("prediction_path", help="path to prediction")
+    parser.add_argument("GT_path", help="path to ground truth")
+    parser.add_argument("data_type", help="which dataset")
+    args = parser.parse_args()
+
+    pred_path = args.prediction_path
+    gt_path = args.GT_path
+    data_type = args.data_type
+
     data_type = 'dhf1k' #dhf1k or ucf
     if data_type == 'dhf1k':
         data_path = '/data/DHF1K/' #'/data/DHF1K/' or '/home/feiyan/data/ucf_sport/testing/'
@@ -87,17 +94,4 @@ if __name__ == '__main__':
         data_path = '/home/feiyan/data/ucf_sport/testing/' #'/data/DHF1K/' or '/home/feiyan/data/ucf_sport/testing/'
         vid_list = os.listdir(data_path)
 
-    #pred_path = '/home/feiyan/test_generate_d123m'
-    pred_path = '/home/feiyan/test_generate'
-    #pred_path = '/home/feiyan/runs/test_generate_ucf_tmp'
-    #pred_path = '/home/feiyan/runs/test_generate_ucf_multi'
-    #pred_path = '/home/feiyan/runs/test_generate'
-    #sub_path = [sub_dir+'test_generate_rc4']
-    #sub_path = [sub_dir+'test_generate_rc2']
-    #sub_path = [sub_dir+'test_generate_samepad']
-    #sub_path = [sub_dir+'test_generate_d123m']
-    #sub_path = [sub_dir+'test_generate_d123m_rc2_ta']
-    main(data_path, vid_list, pred_path, data_type)
-
-    #0601 [0.94260393 0.90405098 0.52923381 3.62900686] mean so far [0.94260393 0.90405098 0.52923381 3.62900686]
-    #0602 [0.91216144 0.87534007 0.50829668 2.66743018] mean so far [0.92738268 0.88969553 0.51876525 3.14821852]
+    main(gt_path, vid_list, pred_path, data_type)

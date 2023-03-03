@@ -89,8 +89,10 @@ def padd_same_end(window, cid, vid_dir, img, sal_indx):
     #exit()
 
 
-def test_one_single(model, dataloader, save_path, sal_indx):
-    data_type = 'dhf1k' #'ucf' #'dhf1k'
+def test_one_single(model, dataloader, save_path, data_type, sal_indx):
+    if data_type == 0: data_type = 'dhf1k' 
+    elif data_type == 1: data_type = 'ucf'
+    elif data_type == 2: data_type = 'hollywood' #'dhf1k'
     #len_dict = vid_length()
     for i, (X, original_size, video_ids, clip_ids, has_label, rand_sig) in enumerate(dataloader):
         vgg_in = X[0].float().cuda(0)
@@ -130,10 +132,10 @@ def test_one_single(model, dataloader, save_path, sal_indx):
                 #padd_same(16, cid, vid_dir, img) #paper number?? need to check
                 padd_append(16, cid, start_idx, newsize, vid_dir, model, vgg_in, sal_indx, data_type, tmp_name)
 
-def test_one_multi(model, dataloader, save_path, sal_indx):
-    #len_dict = vid_length(sal_indx)
-    data_type = 'ucf'
-    #print(len_dict)
+def test_one_multi(model, dataloader, save_path, data_type, sal_indx):
+    if data_type == 0: data_type = 'dhf1k' 
+    elif data_type == 1: data_type = 'ucf'
+    elif data_type == 2: data_type = 'hollywood' #'dhf1k'
     #exit()
     for i, (X, original_size, video_ids, clip_ids, has_label, rand_sig) in enumerate(dataloader):
         vgg_in = X[0].float().cuda(0)
@@ -177,7 +179,7 @@ def test_one_multi(model, dataloader, save_path, sal_indx):
                 #    padd_same_end(16, cid, vid_dir, img, sal_indx)
                 #exit()
 
-def main(model, dataloader, sal_idx, pretrain_path, save_path):
+def main(model, dataloader, sal_idx, pretrain_path, save_path, data_type):
     if pretrain_path:
         state_dict = t.load(pretrain_path, map_location='cuda:0')['student_model']
     else:
@@ -190,9 +192,9 @@ def main(model, dataloader, sal_idx, pretrain_path, save_path):
     model.eval()
     with t.no_grad():
         if len(sal_idx) == 1:
-            test_one_single(model, dataloader['val'], save_path, sal_indx)
+            test_one_single(model, dataloader['val'], save_path, data_type, sal_indx)
         else:
-            test_one_multi(model, dataloader['val'], save_path, sal_indx)
+            test_one_multi(model, dataloader['val'], save_path, data_type, sal_indx)
     print('--------------------------------------------->>>>>>')
     #print('loss val {}'.format(loss_val))
 
@@ -238,7 +240,7 @@ def config_dataset(data_dir, model_input_size, model_output_size):
                                     pin_memory=True, sampler=val_sampler)
                  }
     
-    return dataloader, frame_num, sal_indx
+    return dataloader, frame_num, sal_indx, data_select_idx.index(True)
 
 
 if __name__ == '__main__':
@@ -268,6 +270,6 @@ if __name__ == '__main__':
     d1_last = config.MODEL_SETUP.D1_LAST
     model_path = config.MODEL_SETUP.MODEL_WEIGHTS
 
-    data_loader, frame_num, sal_indx = config_dataset(data_dir, model_input_size, model_output_size)
+    data_loader, frame_num, sal_indx, data_type = config_dataset(data_dir, model_input_size, model_output_size)
     model = FastSalA(reduced_channel, decoder_config, single_mode, d1_last=d1_last, force_multi=force_multi, n_output=model_output_size)
-    main(model, data_loader, sal_indx, model_path, save_path)
+    main(model, data_loader, sal_indx, model_path, save_path, data_type)
