@@ -31,6 +31,7 @@ Kinetic 400 metadata can be downloaded from [This link](https://drive.google.com
 #### Configuration file
 In order to train, evaluate, load model and generate saliency maps, configuration files are needed. Default configurations files are placed in "src/config/"
 + 'train_config_multi.yaml' is used to train TinyHD-M (16 outputs).
++ 'train_config_multi_rc.yaml' is used to train TinyHD-M (16 outputs) with reduces channels (2, 4 times).
 + 'train_config_single.yaml' is used to train TinyHD-S (1 output).
 
 + 'eval_config_multi.yaml' is used to evaluate TinyHD-M (16 outputs).
@@ -50,10 +51,14 @@ The repo contains the following weight files:
 + 'weights/ucf_d123s.pth' : Single output w/o channel reduction (UCF-Sport)
 + 'weights/ucf_d123m.pth' : Multiple output w/o channel reduction (UCF-Sport)
 
-#### Quick start (To be updated)
+#### Quick start
 To generate saliency maps of a video:
 ```bash
-python quickstart.py -model_weights -video_path
+python quick_start.py -model_weights_path -video_path -output_path
+```
+For example using multi-output model trained with DHF1K:
+```bash
+python quickstart.py ../weights/d1d2d3_M_lt.pth ../example_data/0068.AVI ../output_examples/
 ```
 
 #### Training
