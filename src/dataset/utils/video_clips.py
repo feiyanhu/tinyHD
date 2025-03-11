@@ -166,7 +166,12 @@ class VideoClips(object):
                 # we need to specify dtype=torch.long because for empty list,
                 # torch.as_tensor will use torch.float as default dtype. This
                 # happens when decoding fails and no pts is returned in the list.
-                clips = [torch.as_tensor(c, dtype=torch.long) for c in clips]
+                if self.pts_unit == "sec":
+                    # Convert each Fraction to a float so that fractional seconds are preserved.
+                    clips = [torch.as_tensor([float(pt) for pt in c], dtype=torch.float) for c in clips]
+                else:
+                    clips = [torch.as_tensor(c, dtype=torch.long) for c in clips]
+
                 self.video_pts.extend(clips)
                 self.video_fps.extend(fps)
 
@@ -320,8 +325,10 @@ class VideoClips(object):
         clip_pts = self.clips[video_idx][clip_idx]
 
         from torchvision import get_video_backend
-
         backend = get_video_backend()
+        if self.pts_unit == "sec":
+            # Force the video_reader backend for fractional second timestamps.
+            backend = "video_reader"
         #backend = 'video_reader'
         #print(backend)
         #exit()

@@ -4,7 +4,7 @@ from torch.utils.data import Dataset, DataLoader
 import cv2
 from os.path import exists
 from os import mkdir
-
+import torch 
 import os
 
 from models.fastsal3D.model import FastSalA
@@ -14,6 +14,8 @@ from torchvision import transforms as T
 from torchvision.transforms._transforms_video import ToTensorVideo, NormalizeVideo
 from dataset.my_transform import resize_random_hflip_crop
 from generate import post_process_png
+from torchvision import set_video_backend
+set_video_backend("pyav")
 
 def get_config_path(w_path):
     if 'd1d2d3_S_lt.pth' in w_path:
@@ -51,7 +53,7 @@ class Video_reader(Dataset):
     def __init__(self, v_path, w, s):
         v_id = v_path.split('/')[-1]
         v_dir = '/'.join(v_path.split('/')[:-1])
-        self.vr = VideoClips([v_path], clip_length_in_frames=w, frames_between_clips=s)
+        self.vr = VideoClips([v_path], clip_length_in_frames=w, frames_between_clips=s, _pts_unit='pts')
         self.vr.video_dir = v_dir
         #print(self.vr.video_paths)
         self.vr.video_paths = [v_id]
@@ -59,12 +61,25 @@ class Video_reader(Dataset):
         self.aug = resize_random_hflip_crop((192, 256), (192, 256), random_hflip=0, random_crop=False, centre_crop=False)
     
     def __getitem__(self, item):
+        # Get the clip information using the provided index (item)
         v_dt, a_dt, info, v_idx, clip_pts = self.vr.get_clip(item)
+
+        # Optionally, convert clip_pts if it is a NumPy scalar
+        if isinstance(clip_pts, np.generic):
+            clip_pts = clip_pts.item()
+
+        # Compute the output size from the video data shape (excluding the batch and channel dimensions)
         o_size = np.asarray(list(v_dt.shape[1:-1]))
+        o_size = t.from_numpy(o_size)
+
+
+        # Convert the video data to the format expected by VGG using your transforms
         v_dt = self.to_vgg(v_dt)
+
+        # Apply your augmentation function (which returns a list) and unpack the first element
         [data_v] = self.aug([v_dt])
-        #print(clip_pts)
-        #exit()
+
+        # Return the processed video data, the (converted) clip points, and the output size
         return data_v, clip_pts, o_size
     
     def __len__(self):
@@ -105,6 +120,30 @@ def predict_multi(dataloader, model, save_dir):
                 file_name = os.path.join(save_dir, '{}.png'.format(f_id))
                 cv2.imwrite(file_name, img)
 
+                
+                
+from torch.utils.data._utils.collate import default_collate
+import numpy as np
+
+def recursive_convert(item):
+    if isinstance(item, np.generic):
+        return item.item()
+    elif isinstance(item, np.ndarray):
+        return item.tolist()  # Convert arrays (even if >0-dim) to lists
+    elif isinstance(item, list):
+        return [recursive_convert(i) for i in item]
+    elif isinstance(item, tuple):
+        return tuple(recursive_convert(i) for i in item)
+    elif isinstance(item, dict):
+        return {k: recursive_convert(v) for k, v in item.items()}
+    return item
+
+def custom_collate(batch):
+    # Recursively convert all numpy scalars in the batch
+    batch = recursive_convert(batch)
+    return default_collate(batch)
+                
+                
 def get_video_reader(v_path, mode):
     v = Video_reader(v_path, 16, 1)
 
@@ -112,7 +151,15 @@ def get_video_reader(v_path, mode):
         val_sampler = EvalClipSampler(v.vr, 16, step=1)
     elif mode == 'multi':
         val_sampler = EvalClipSampler(v.vr, 16, step=16)
-    dataloader = DataLoader(v, batch_size=20, shuffle=False, num_workers=4,pin_memory=True, sampler=val_sampler)
+    dataloader = DataLoader(
+        v,
+        batch_size=20,
+        shuffle=False,
+        num_workers=0,
+        pin_memory=True,
+        sampler=val_sampler,
+        collate_fn=custom_collate
+    )
     
     v_id = v_path.split('/')[-1]
     v_id = v_id.replace('.', '_')

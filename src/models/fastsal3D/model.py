@@ -1,7 +1,9 @@
 #from .student_abstract import Student
 from numpy import single
 import torch
-from torch.autograd.grad_mode import F
+# from torch.autograd.grad_mode import F
+import torch.nn.functional as F
+
 import torch.nn as nn
 from .encoder import Encoder_wrapper
 from .decoder import Decoder_wrapper

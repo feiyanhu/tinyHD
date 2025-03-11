@@ -1,0 +1,50 @@
+name: tiny
+channels:
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=main
+  - _openmp_mutex=5.1=1_gnu
+  - bzip2=1.0.8=h5eee18b_6
+  - ca-certificates=2025.2.25=h06a4308_0
+  - ld_impl_linux-64=2.40=h12ee557_0
+  - libffi=3.4.4=h6a678d5_1
+  - libgcc-ng=11.2.0=h1234567_1
+  - libgomp=11.2.0=h1234567_1
+  - libstdcxx-ng=11.2.0=h1234567_1
+  - libuuid=1.41.5=h5eee18b_0
+  - ncurses=6.4=h6a678d5_0
+  - openssl=3.0.16=h5eee18b_0
+  - pip=25.0=py310h06a4308_0
+  - python=3.10.16=he870216_1
+  - readline=8.2=h5eee18b_0
+  - setuptools=75.8.0=py310h06a4308_0
+  - sqlite=3.45.3=h5eee18b_0
+  - tk=8.6.14=h39e8969_0
+  - tzdata=2025a=h04d1e81_0
+  - wheel=0.45.1=py310h06a4308_0
+  - xz=5.6.4=h5eee18b_1
+  - zlib=1.2.13=h5eee18b_1
+  - pip:
+      - av==14.2.0
+      - certifi==2025.1.31
+      - charset-normalizer==3.4.1
+      - idna==3.10
+      - imageio==2.37.0
+      - lazy-loader==0.4
+      - networkx==3.4.2
+      - numpy==1.22.4
+      - opencv-python==4.11.0.86
+      - packaging==24.2
+      - pillow==11.1.0
+      - pywavelets==1.8.0
+      - pyyaml==6.0.2
+      - requests==2.32.3
+      - scikit-image==0.21.0
+      - scipy==1.10.1
+      - tifffile==2025.2.18
+      - torch==1.13.1+cu116
+      - torchaudio==0.13.1+cu116
+      - torchvision==0.14.1+cu116
+      - typing-extensions==4.12.2
+      - urllib3==2.3.0
+prefix: /root/miniconda3/envs/tiny

@@ -58,7 +58,7 @@ python quick_start.py -model_weights_path -video_path -output_path
 ```
 For example using multi-output model trained with DHF1K:
 ```bash
-python quickstart.py ../weights/d1d2d3_M_lt.pth ../example_data/0068.AVI ../output_examples/
+python quick_start.py ../weights/d1d2d3_M_lt.pth ../example_data/0068.AVI ../output_examples/
 ```
 
 #### Training

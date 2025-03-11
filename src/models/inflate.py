@@ -1,6 +1,7 @@
 import torch as t
 import torch.nn as nn
-from torchvision.models.mobilenetv2 import InvertedResidual, ConvBNReLU, ConvNormActivation
+# from torchvision.models.mobilenetv2 import InvertedResidual, ConvBNReLU, ConvNormActivation
+from torchvision.models.mobilenetv2 import InvertedResidual, Conv2dNormActivation
 
 def inflate_weights_conv2d(layer_3d, layer_2d, reduce_channel):
     if layer_3d.weight is not None:
@@ -123,7 +124,7 @@ def inflate_ConvBNReLU(is_first, block, config, reduce_channel, loadweights):
 
 def inflate_InvertedResidual(is_first, block, config, reduce_channel, loadweights):
     for i, x in enumerate(block.conv):
-        if isinstance(x, ConvNormActivation):
+        if isinstance(x, Conv2dNormActivation):
             is_first = is_first and i == 0
             local_config = config[i]
             block.conv[i] = inflate_ConvBNReLU(is_first, x, local_config, reduce_channel, loadweights)
@@ -140,7 +141,7 @@ def inflate_InvertedResidual(is_first, block, config, reduce_channel, loadweight
 def inflate_mobilenetv2Block(is_first, block, config, reduce_channel=1, loadweights=True):
     print(is_first, block, config)
 
-    if isinstance(block, ConvNormActivation):
+    if isinstance(block, Conv2dNormActivation):
         return inflate_ConvBNReLU(is_first, block, config, reduce_channel, loadweights)
     elif isinstance(block, InvertedResidual):
         return inflate_InvertedResidual(is_first, block, config, reduce_channel, loadweights)
